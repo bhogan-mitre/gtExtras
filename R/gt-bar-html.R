@@ -16,6 +16,9 @@
 #' @param scaled `TRUE`/`FALSE` logical indicating if the value is already scaled to a percent of max (`TRUE`) or if it needs to be scaled (`FALSE`). Defaults to `FALSE`, meaning the value will be divided by the max value in that column and then multiplied by 100.
 #' @param labels `TRUE`/`FALSE` logical representing if labels should be plotted. Defaults to `FALSE`, meaning that no value labels will be plotted.
 #' @param label_cutoff A number, 0 to 1, representing where to set the inside/outside label boundary. Defaults to 0.40 (40%) of the column's maximum value. If the value in that row is less than the cutoff, the label will be placed outside the bar, otherwise it will be placed within the bar. This interacts with the overall width of the bar, so if you are not happy with the placement of the labels you may try adjusting the `width` argument as well.
+#' @param multiplier A number, to multiply to the value prior to labeling.
+#' @param prefix A character to apply as a prefix to the beginning of the label.
+#' @param suffix A character to apply as a suffix to the end of the label.  Defaults to '%'.
 #' @param decimals A number representing how many decimal places to be used in label rounding. Defaults to 1.
 #' @param font_style A character representing the font style of the labels. Accepts one of 'bold' (default), 'italic', or 'normal'.
 #' @param font_size A character representing the font size of the labels. Defaults to '10px'.
@@ -61,6 +64,9 @@ gt_plt_bar_pct <- function(
     scaled = FALSE,
     labels = FALSE,
     label_cutoff = 0.40,
+    multiplier = 1,
+    prefix = "",
+    suffix = "%",
     decimals = 1,
     font_style = "bold",
     font_size = "10px") {
@@ -113,7 +119,7 @@ gt_plt_bar_pct <- function(
         }
 
         # create label string to print out // add % sign if requested
-        label <- glue::glue("{round(label_values, decimals)}%")
+        label <- glue::glue("{prefix}{round(label_values*multiplier, decimals)}{suffix}")
 
         if (x < (label_cutoff * max_x)) {
 
