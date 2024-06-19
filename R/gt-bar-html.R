@@ -112,14 +112,17 @@ gt_plt_bar_pct <- function(
 
       if (labels) {
         # adjust values for labeling // scale_label
-        label_values <- if(scaled) {
-          x
-        } else {
-          x / max_x * 100
-        }
+        # label_values <- if(scaled) {
+        #   x
+        # } else {
+        #   x / max_x * 100
+        # }
+
+        # label with actual value (not relative to max row)        
+        label_values <- x * multiplier
 
         # create label string to print out // add % sign if requested
-        label <- glue::glue("{prefix}{round(label_values*multiplier, decimals)}{suffix}")
+        label <- glue::glue("{prefix}{round(label_values, decimals)}{suffix}")
 
         if (x < (label_cutoff * max_x)) {
 
